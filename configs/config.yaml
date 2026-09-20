@@ -1,0 +1,56 @@
+paths:
+  ml_dir: ml-32m
+  tmdb_csv: tmdb/TMDB_all_movies.csv
+  processed_dir: data/processed
+  emb_dir: data/embeddings
+  models_dir: models
+
+etl:
+  min_ratings_per_movie: 1
+  bayes_m: 100.0          # Bayesian average shrinkage strength
+  cast_top_n: 5
+
+split:
+  train_frac: 0.80        # global temporal quantile for train/val boundary
+  val_frac: 0.90          # quantile for val/test boundary
+  min_user_ratings: 5
+
+embeddings:
+  model_name: sentence-transformers/all-MiniLM-L6-v2
+  batch_size: 512
+  max_chars: 1200
+
+cf:
+  dim: 128
+  epochs: 10
+  lr: 0.05
+  reg: 1.0e-5
+  batch_size: 524288      # interactions per GPU batch
+  neg_per_pos: 4
+  positive_threshold: 3.5
+
+index:
+  hnsw_m: 32
+  ef_construction: 200
+  ef_search: 128
+
+retrieval:
+  content_k: 150
+  cf_k: 150
+  covis_k: 150
+  sasrec_k: 100
+  popularity_k: 200
+
+ranker:
+  n_users_train: 15000
+  n_users_eval: 4000
+  min_profile_items: 5
+  n_estimators: 600
+  learning_rate: 0.05
+  num_leaves: 63
+  early_stopping: 50
+
+rerank:
+  mmr_lambda: 0.7
+  top_n: 50               # ranker output fed into MMR
+  final_k: 10

@@ -1,0 +1,59 @@
+# ============================
+# Keep: code + Streamlit deploy artifacts only
+# ============================
+
+# ignore everything at root, then whitelist
+/*
+!/app.py
+!/conftest.py
+!/requirements.txt
+!/.gitignore
+!/AGENTS.md
+!/RECOMMENDER_AGENT.md
+!/.streamlit/
+!/configs/
+!/src/
+!/tests/
+!/data/
+!/models/
+!/experiments/
+
+# --- experiments: only the promoted summary (sidebar eval panel) ---
+experiments/*
+!experiments/v7_fine_grades/
+experiments/v7_fine_grades/*
+!experiments/v7_fine_grades/summary.json
+
+# --- data: only what the app loads ---
+data/*
+!data/processed/
+data/processed/*
+!data/processed/movies.parquet
+!data/embeddings/
+data/embeddings/*
+!data/embeddings/content.f16.npy
+
+# --- models: production serving artifacts only ---
+# .faiss indexes are NOT committed (content_hnsw.faiss >100MB);
+# rebuilt from committed embeddings at startup.
+models/*
+!models/ranker.joblib
+!models/covis.npz
+!models/pop_items.npy
+!models/item_bias.npy
+!models/bpr_item_factors.npy
+!models/item_factors.npy
+!models/sasrec.pt
+!models/sasrec_meta.joblib
+!models/twotower.pt
+!models/tt_item_emb.npy
+
+# --- noise ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store
+*.log
+*.png
+*.ipynb
+.ipynb_checkpoints/
