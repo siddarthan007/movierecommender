@@ -12,13 +12,12 @@ Serving score:  s(c) = sum_{i in profile} w_i * C_norm[i, c]
 from __future__ import annotations
 
 import numpy as np
-import polars as pl
 import scipy.sparse as sp
 
 from .config import CFG, Config
 
 
-def build_covis(ratings_train: pl.DataFrame, n_items: int,
+def build_covis(ratings_train, n_items: int,
                 threshold: float, top_k: int = 100,
                 user_block: int = 40000, item_block: int = 4096,
                 max_items_per_user: int = 300,
@@ -27,6 +26,7 @@ def build_covis(ratings_train: pl.DataFrame, n_items: int,
     """recency_floor < 1.0 weights each user's edges by recency rank:
     oldest kept item gets recency_floor*w, newest gets w (linear ramp).
     norm: 'cosine' = C/sqrt(d_i d_j); 'jaccard' = C/(d_i + d_j - C)."""
+    import polars as pl
     pos = ratings_train.filter(pl.col("rating") >= threshold)
     uniq_users, u_dense = np.unique(pos["userId"].to_numpy(), return_inverse=True)
     n_users = len(uniq_users)

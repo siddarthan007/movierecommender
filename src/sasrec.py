@@ -8,7 +8,6 @@ Inference: encode prefix -> score all items -> top-k retrieval signal.
 from __future__ import annotations
 
 import numpy as np
-import polars as pl
 import torch
 import torch.nn as nn
 
